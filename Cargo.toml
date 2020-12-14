@@ -15,10 +15,9 @@ phf = { version = "0.8", optional = true }
 
 [build-dependencies]
 includedir_codegen = { version = "0.6", optional = true }
-blake2b-rs = { version = "0.2", optional = true }
-faster-hex = { version = "0.4", optional = true }
+blake2b-rs = "0.2"
+faster-hex = "0.4"
 
 [features]
 default = []
-
-include_locks = ["includedir", "phf", "includedir_codegen", "blake2b-rs", "faster-hex"]
+lock_binaries = ["includedir", "phf", "includedir_codegen"]

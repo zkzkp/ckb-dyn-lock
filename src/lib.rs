@@ -1,19 +1,22 @@
 #![no_std]
 
-#[cfg(not(feature = "include_locks"))]
+#[cfg(not(feature = "lock_binaries"))]
 extern crate alloc;
 
-#[cfg(feature = "include_locks")]
+#[cfg(feature = "lock_binaries")]
 extern crate std;
 
-#[cfg(feature = "include_locks")]
 pub mod locks {
-    //! pub use const BUNDLED_CELL: Files
     //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL: [u8; 32]
     //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_ACPL: [u8; 32]
-
-    include!(concat!(env!("OUT_DIR"), "/bundled.rs"));
+    //! pub use const CODE_HASH_SECP256K1_DATA: [U8; 32]
     include!(concat!(env!("OUT_DIR"), "/code_hashes.rs"));
+
+    #[cfg(feature = "lock_binaries")]
+    pub mod binaries {
+        //! pub use const BUNDLED_CELL: Files
+        include!(concat!(env!("OUT_DIR"), "/bundled.rs"));
+    }
 }
 
 use ckb_std::dynamic_loading::{CKBDLContext, Symbol};
