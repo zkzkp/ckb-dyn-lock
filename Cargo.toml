@@ -1,0 +1,22 @@
+[package]
+name = "dyn-lock"
+version = "0.1.0"
+authors = ["zkzkp <zk.sec@outlook.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ckb-std = "0.7"
+includedir = { version = "0.6", optional = true }
+phf = { version = "0.8", optional = true }
+
+[build-dependencies]
+includedir_codegen = { version = "0.6", optional = true }
+blake2b-rs = { version = "0.2", optional = true }
+faster-hex = { version = "0.4", optional = true }
+
+[features]
+default = []
+
+include_locks = ["includedir", "phf", "includedir_codegen", "blake2b-rs", "faster-hex"]

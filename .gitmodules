@@ -1,0 +1,3 @@
+[submodule "deps/pw-lock"]
+	path = deps/pw-lock
+	url = https://github.com/lay2dev/pw-lock
