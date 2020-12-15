@@ -10,6 +10,8 @@ pub mod locks {
     //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL: [u8; 32]
     //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_ACPL: [u8; 32]
     //! pub use const CODE_HASH_SECP256K1_DATA: [U8; 32]
+
+    pub const CODE_HASH_SECP256K1_KECCAK256_LOCK_LIB: [u8; 32] = [0u8; 32];
     include!(concat!(env!("OUT_DIR"), "/code_hashes.rs"));
 
     #[cfg(feature = "lock_binaries")]
@@ -21,25 +23,29 @@ pub mod locks {
 
 use ckb_std::dynamic_loading::{CKBDLContext, Symbol};
 
-type LockMain = unsafe extern "C" fn() -> i32;
+type VerifySecp256k1KeccakSighashAll = unsafe extern "C" fn(eth_address: *const [u8; 20]) -> i32;
 
-const LOCK_MAIN: &[u8; 4] = b"main";
+const VERIFY_SECP256K1_KECCAK_SIGHASH_ALL: &[u8; 35] = b"verify_secp256k1_keccak_sighash_all";
 
 pub struct DynLock {
-    lock_main: Symbol<LockMain>,
+    verify_signhash: Symbol<VerifySecp256k1KeccakSighashAll>,
 }
 
 impl DynLock {
     pub fn load<T>(context: &mut CKBDLContext<T>, code_hash: &[u8]) -> Self {
-        let lock = context.load(code_hash).expect("load lock");
-        let lock_main: Symbol<LockMain> = unsafe { lock.get(LOCK_MAIN).expect("load lock main") };
+        let lock = context.load(code_hash).expect("load lock lib");
 
-        DynLock { lock_main }
+        let verify_signhash: Symbol<VerifySecp256k1KeccakSighashAll> = unsafe {
+            lock.get(VERIFY_SECP256K1_KECCAK_SIGHASH_ALL)
+                .expect("load sign hash fn")
+        };
+
+        DynLock { verify_signhash }
     }
 
-    pub fn verify(&self) -> Result<(), i32> {
-        let lock_main = &self.lock_main;
-        let error_code = unsafe { lock_main() };
+    pub fn verify(&self, hash: &[u8; 20]) -> Result<(), i32> {
+        let verify_signhash = &self.verify_signhash;
+        let error_code = unsafe { verify_signhash(hash) };
 
         if error_code != 0 {
             return Err(error_code);
