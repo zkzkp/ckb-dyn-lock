@@ -1,1 +1,1 @@
-# dyn-lock
+# ckb-dyn-lock
