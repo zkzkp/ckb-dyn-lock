@@ -22,6 +22,10 @@ const BINARIES: &[(&str, &str)] = &[
         "secp256k1_data",
         "9799bee251b975b82c45a02154ce28cec89c5853ecc14d12b7b8cccfc19e0af4",
     ),
+    (
+        "secp256k1_keccak256_sighash_all_dual",
+        "8791bd115d23494f870d3b71cc7a46c1c4915936cd45b0af9c8925424a22010d",
+    ),
 ];
 
 pub fn main() {
