@@ -7,11 +7,9 @@ extern crate alloc;
 extern crate std;
 
 pub mod locks {
-    //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL: [u8; 32]
-    //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_ACPL: [u8; 32]
+    //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_DUAL: [u8; 32]
     //! pub use const CODE_HASH_SECP256K1_DATA: [U8; 32]
 
-    pub const CODE_HASH_SECP256K1_KECCAK256_LOCK_LIB: [u8; 32] = [0u8; 32];
     include!(concat!(env!("OUT_DIR"), "/code_hashes.rs"));
 
     #[cfg(feature = "lock_binaries")]
