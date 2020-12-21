@@ -23,8 +23,8 @@ pub mod locks {
         include!(concat!(env!("OUT_DIR"), "/bundled.rs"));
 
         const BINARIES: [&str; 2] = [
-            "/specs/cells/secp256k1_data",
-            "/specs/cells/secp256k1_keccak256_sighash_all_dual",
+            "specs/cells/secp256k1_data",
+            "specs/cells/secp256k1_keccak256_sighash_all_dual",
         ];
 
         #[repr(u8)]
