@@ -20,4 +20,4 @@ faster-hex = "0.4"
 
 [features]
 default = []
-lock_binaries = ["includedir", "phf", "includedir_codegen"]
+lock_binary = ["includedir", "phf", "includedir_codegen"]

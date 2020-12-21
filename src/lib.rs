@@ -1,9 +1,9 @@
 #![no_std]
 
-#[cfg(not(feature = "lock_binaries"))]
+#[cfg(not(feature = "lock_binary"))]
 extern crate alloc;
 
-#[cfg(feature = "lock_binaries")]
+#[cfg(feature = "lock_binary")]
 extern crate std;
 
 pub mod locks {
@@ -12,8 +12,8 @@ pub mod locks {
 
     include!(concat!(env!("OUT_DIR"), "/code_hashes.rs"));
 
-    #[cfg(feature = "lock_binaries")]
-    pub mod binaries {
+    #[cfg(feature = "lock_binary")]
+    pub mod binary {
         //! pub use const BUNDLED_CELL: Files
         include!(concat!(env!("OUT_DIR"), "/bundled.rs"));
     }

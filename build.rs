@@ -21,7 +21,7 @@ const BINARIES: &[(&str, &str)] = &[
 ];
 
 pub fn main() {
-    #[cfg(feature = "lock_binaries")]
+    #[cfg(feature = "lock_binary")]
     let mut bundled = includedir_codegen::start("BUNDLED_CELL");
 
     let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join("code_hashes.rs");
@@ -34,7 +34,7 @@ pub fn main() {
 
         let mut buf = [0u8; BUF_SIZE];
 
-        #[cfg(feature = "lock_binaries")]
+        #[cfg(feature = "lock_binary")]
         bundled
             .add_file(&path, includedir_codegen::Compression::Gzip)
             .expect("add files to resource bundle");
@@ -76,7 +76,7 @@ pub fn main() {
         panic!("not all hashes are right");
     }
 
-    #[cfg(feature = "lock_binaries")]
+    #[cfg(feature = "lock_binary")]
     bundled.build("bundled.rs").expect("build resource bundle");
 }
 
