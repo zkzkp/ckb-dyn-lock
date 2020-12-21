@@ -3,9 +3,11 @@
 #[cfg(not(feature = "lock_binary"))]
 extern crate alloc;
 
-#[cfg(feature = "lock_binary")]
+#[cfg(any(feature = "lock_binary", feature = "test_tool"))]
 extern crate std;
 
+#[cfg(feature = "test_tool")]
+pub mod test_tool;
 pub mod locks {
     //! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_DUAL: [u8; 32]
     //! pub use const CODE_HASH_SECP256K1_DATA: [U8; 32]
