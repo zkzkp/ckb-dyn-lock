@@ -10,34 +10,40 @@ pub mod locks;
 #[cfg(feature = "test_tool")]
 pub mod test_tool;
 
+#[derive(Debug)]
+pub enum Error {
+    DynamicLoading(ckb_std::dynamic_loading::Error),
+    ValidationFunctionNotFound,
+    ValidateFailure(i32),
+}
+
 use ckb_std::dynamic_loading::{CKBDLContext, Symbol};
 
-type VerifySecp256k1KeccakSighashAll = unsafe extern "C" fn(eth_address: *const [u8; 20]) -> i32;
-
-const VERIFY_SECP256K1_KECCAK_SIGHASH_ALL: &[u8; 35] = b"verify_secp256k1_keccak_sighash_all";
+type Validate = unsafe extern "C" fn(args: *const u8, len: u64) -> i32;
+const VALIDATE: &[u8; 8] = b"validate";
 
 pub struct DynLock {
-    verify_signhash: Symbol<VerifySecp256k1KeccakSighashAll>,
+    validate: Symbol<Validate>,
 }
 
 impl DynLock {
-    pub fn load<T>(context: &mut CKBDLContext<T>, code_hash: &[u8]) -> Self {
-        let lock = context.load(code_hash).expect("load lock lib");
+    pub fn load<T>(context: &mut CKBDLContext<T>, code_hash: &[u8]) -> Result<Self, Error> {
+        let lock = context.load(code_hash).map_err(Error::DynamicLoading)?;
 
-        let verify_signhash: Symbol<VerifySecp256k1KeccakSighashAll> = unsafe {
-            lock.get(VERIFY_SECP256K1_KECCAK_SIGHASH_ALL)
-                .expect("load sign hash fn")
+        let validate: Symbol<Validate> = unsafe {
+            lock.get(VALIDATE)
+                .ok_or_else(|| Error::ValidationFunctionNotFound)?
         };
 
-        DynLock { verify_signhash }
+        Ok(DynLock { validate })
     }
 
-    pub fn verify(&self, hash: &[u8; 20]) -> Result<(), i32> {
-        let verify_signhash = &self.verify_signhash;
-        let error_code = unsafe { verify_signhash(hash) };
+    pub fn validate(&self, args: &[u8]) -> Result<(), Error> {
+        let f = &self.validate;
+        let error_code = unsafe { f(args.as_ptr(), args.len() as u64) };
 
         if error_code != 0 {
-            return Err(error_code);
+            return Err(Error::ValidateFailure(error_code));
         }
         Ok(())
     }
