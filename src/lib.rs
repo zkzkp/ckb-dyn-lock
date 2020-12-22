@@ -38,9 +38,9 @@ impl DynLock {
         Ok(DynLock { validate })
     }
 
-    pub fn validate(&self, args: &[u8]) -> Result<(), Error> {
+    pub fn validate(&self, args: &[u8], args_size: u64) -> Result<(), Error> {
         let f = &self.validate;
-        let error_code = unsafe { f(args.as_ptr(), args.len() as u64) };
+        let error_code = unsafe { f(args.as_ptr(), args_size) };
 
         if error_code != 0 {
             return Err(Error::ValidateFailure(error_code));
