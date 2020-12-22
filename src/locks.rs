@@ -1,5 +1,6 @@
-//! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_DUAL: [u8; 32]
 //! pub use const CODE_HASH_SECP256K1_DATA: [U8; 32]
+//! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL: [u8; 32]
+//! pub use const CODE_HASH_SECP256K1_KECCAK256_SIGHASH_ALL_DUAL: [u8; 32]
 
 include!(concat!(env!("OUT_DIR"), "/code_hashes.rs"));
 
@@ -11,15 +12,17 @@ pub mod binary {
 
     include!(concat!(env!("OUT_DIR"), "/bundled.rs"));
 
-    const BINARIES: [&str; 2] = [
+    const BINARIES: [&str; 3] = [
         "specs/cells/secp256k1_data",
+        "specs/cells/secp256k1_keccak256_sighash_all",
         "specs/cells/secp256k1_keccak256_sighash_all_dual",
     ];
 
     #[repr(u8)]
     pub enum Binary {
         Secp256k1Data = 1,
-        Secp256k1Keccak256SighashDual,
+        Secp256k1Keccak256SighashAll,
+        Secp256k1Keccak256SighashAllDual,
     }
 
     pub fn get(binary: Binary) -> Cow<'static, [u8]> {
@@ -37,7 +40,8 @@ pub mod binary {
         #[test]
         fn test_get() {
             assert!(inner_get(Binary::Secp256k1Data).is_ok());
-            assert!(inner_get(Binary::Secp256k1Keccak256SighashDual).is_ok());
+            assert!(inner_get(Binary::Secp256k1Keccak256SighashAll).is_ok());
+            assert!(inner_get(Binary::Secp256k1Keccak256SighashAllDual).is_ok());
         }
     }
 }

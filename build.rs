@@ -15,6 +15,10 @@ const BINARIES: &[(&str, &str)] = &[
         "9799bee251b975b82c45a02154ce28cec89c5853ecc14d12b7b8cccfc19e0af4",
     ),
     (
+        "secp256k1_keccak256_sighash_all",
+        "f3d9b5e8eff7bce00731be767a65f58cc5707c2b6ee8e732d56f383a47f77abd",
+    ),
+    (
         "secp256k1_keccak256_sighash_all_dual",
         "28151950f104dac5f4c391b19a80a08a57135cf5e5722358c7b7dc4174b73cf5",
     ),
