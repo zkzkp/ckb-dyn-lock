@@ -9,7 +9,8 @@ description = "ckb dyn lock lib"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ckb-std = "0.7"
+# For simulator support
+ckb-std = { git = "https://github.com/nervosnetwork/ckb-std", rev = "29455b8" }
 includedir = { version = "0.6", optional = true }
 phf = { version = "0.8", optional = true }
 sha3 = {version = "0.8", optional = true }
