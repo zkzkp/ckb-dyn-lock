@@ -1,6 +1,6 @@
 [package]
 name = "ckb-dyn-lock"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["zkzkp <zk.sec@outlook.com>"]
 edition = "2018"
 license = "MIT"
